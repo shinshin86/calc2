@@ -1,17 +1,21 @@
 fn evaluate(expression: &str) -> Result<f64, String> {
     let operators = ['+', '-', '*', '/'];
-    
+
     let current_operator = operators.iter().find(|op| expression.contains(**op));
-    
+
     let current_operator = match current_operator {
         Some(op) => op,
         None => return Err("Invalid expression: Operator not found".to_string()),
     };
-    
+
     let parts: Vec<&str> = expression.split(*current_operator).collect();
-    let left_operand = parts[0].parse::<f64>().map_err(|_| "Invalid left operand".to_string())?;
-    let right_operand = parts[1].parse::<f64>().map_err(|_| "Invalid right operand".to_string())?;
-    
+    let left_operand = parts[0]
+        .parse::<f64>()
+        .map_err(|_| "Invalid left operand".to_string())?;
+    let right_operand = parts[1]
+        .parse::<f64>()
+        .map_err(|_| "Invalid right operand".to_string())?;
+
     let result = match current_operator {
         &'+' => left_operand + right_operand,
         &'-' => left_operand - right_operand,
@@ -19,13 +23,13 @@ fn evaluate(expression: &str) -> Result<f64, String> {
         &'/' => left_operand / right_operand,
         _ => return Err("Invalid operator".to_string()),
     };
-    
+
     Ok(result)
 }
 
 fn main() {
     let expressions = vec!["1+1", "5-2", "3*4", "10/2"];
-    
+
     for expression in expressions {
         let result = evaluate(expression);
         match result {
@@ -34,7 +38,6 @@ fn main() {
         }
     }
 }
-
 
 #[cfg(test)]
 mod tests {
